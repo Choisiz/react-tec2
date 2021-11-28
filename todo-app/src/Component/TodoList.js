@@ -1,11 +1,10 @@
 import TodoListItem from './TodoListItem'
 import '../TodoList.scss';
-const TodoList = () => {
+const TodoList = ({todos}) => {
+    console.log('??wew',todos)
     return (
         <div className="TodoList">
-            <TodoListItem/>
-            <TodoListItem/>
-            <TodoListItem/>
+                <TodoListItem todo={todos}/>
         </div>
 
     )
