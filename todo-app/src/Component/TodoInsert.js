@@ -1,22 +1,21 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef } from "react";
 import { MdAdd } from "react-icons/md";
 import "../TodoInsert.scss";
 
-const TodoInsert = ({ onInsert }) => {
+const TodoInsert = (props) => {
+  //const getList = localStorage.getItem("list");
+  //const localGetList = JSON.parse(getList);
   const [value, setValue] = useState("");
+
   const onChange = (e) => {
     setValue(e.target.value);
-    console.log("vlaue", value);
   };
 
-  const onSubmit = useCallback(
-    (e) => {
-      onInsert(value);
-      setValue("");
-      e.preventDefault();
-    },
-    [onInsert, value]
-  );
+  const onSubmit = (e) => {
+    e.preventDefault();
+    props.onInsert(value);
+    setValue("");
+  };
 
   return (
     <form className="TodoInsert" onSubmit={onSubmit}>
