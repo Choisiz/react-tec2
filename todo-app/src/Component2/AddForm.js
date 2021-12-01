@@ -1,32 +1,38 @@
-import { useCallback, useState, useRef } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { MdAdd } from "react-icons/md";
 import "../TodoInsert.scss";
 
-const TodoInsert = (props) => {
+const AddForm = memo(({ addTodo }) => {
+  console.log("add", addTodo);
   const [value, setValue] = useState("");
+  const input = useRef(null);
+  useEffect(() => {
+    input.current.focus();
+    console.log("시작");
+    setValue("");
+  }, [addTodo]);
 
-  const onChange = (e) => {
+  const onChangeInput = (e) => {
     setValue(e.target.value);
   };
-
   const onSubmit = (e) => {
     e.preventDefault();
-    props.onInsert(value);
-    setValue("");
+    addTodo(value);
+    console.log("ww");
   };
 
   return (
     <form className="TodoInsert" onSubmit={onSubmit}>
       <input
+        ref={input}
         placeholder="할일을 입력하세요"
         value={value}
-        onChange={onChange}
+        onChange={onChangeInput}
       />
       <button type="submit">
         <MdAdd />
       </button>
     </form>
   );
-};
-
-export default TodoInsert;
+});
+export default AddForm;

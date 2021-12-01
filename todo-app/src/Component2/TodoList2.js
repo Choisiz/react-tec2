@@ -1,6 +1,6 @@
 import TodoListItem from "./TodoListItem";
 import "../TodoList.scss";
-const TodoList = ({ todos }) => {
+const TodoList2 = ({ todos }) => {
   return (
     <div className="TodoList">
       {Array.isArray(todos)
@@ -10,4 +10,4 @@ const TodoList = ({ todos }) => {
   );
 };
 
-export default TodoList;
+export default TodoList2;

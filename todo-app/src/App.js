@@ -22,13 +22,17 @@ const App = () => {
     [todos]
   );
 
-  const getList = localStorage.getItem("list");
-  const localGetList = JSON.parse(getList);
+  useEffect(() => {
+    const getList = localStorage.getItem("list");
+    if (getList) {
+      setTodos(JSON.parse(getList));
+    }
+  }, []);
 
   return (
     <TodoTemplate>
       <TodoInsert onInsert={onInsert} />
-      <TodoList todos={localGetList} />
+      <TodoList todos={todos} />
     </TodoTemplate>
   );
 };
