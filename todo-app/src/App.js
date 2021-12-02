@@ -14,9 +14,7 @@ const App = () => {
         text,
         checked: false,
       };
-
       setTodos(todos.concat(todo));
-      localStorage.setItem("list", JSON.stringify(todos));
       nextId.current += 1;
     },
     [todos]
@@ -28,6 +26,10 @@ const App = () => {
       setTodos(JSON.parse(getList));
     }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("list", JSON.stringify(todos));
+  }, [todos]);
 
   return (
     <TodoTemplate>

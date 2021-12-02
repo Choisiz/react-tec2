@@ -4,7 +4,7 @@ import {
   MdCheckBox,
 } from "react-icons/md";
 import cn from "classnames";
-import "../TodoListItem.scss";
+import "./TodoListItem.scss";
 
 const TodoListItem = ({ todo }) => {
   const { text, checked } = todo;
@@ -12,7 +12,8 @@ const TodoListItem = ({ todo }) => {
   return (
     <div className="TodoListItem">
       <div className={cn("checkbox", { checked })}>
-        {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
+        {console.log("c", checked)}
+        {checked ? <MdCheckBoxOutlineBlank /> : <MdCheckBox />}
         <div className="text">{text}</div>
       </div>
       <div className="remove">
