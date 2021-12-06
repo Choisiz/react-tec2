@@ -1,4 +1,5 @@
 import React, { useCallback, useRef, useState } from "react";
+import produce from "immer";
 
 export default function App() {
   const nextId = useRef(1);
@@ -7,20 +8,15 @@ export default function App() {
     array: [],
     uselessValue: null,
   });
-  console.log("data", data);
 
-  const onChange = useCallback(
-    (e) => {
-      const { name, value } = e.target;
-      console.log(name, value);
-      console.log("form", form);
-      setForm({
-        ...form,
-        [name]: [value],
-      });
-    },
-    [form]
-  );
+  const onChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setForm(
+      produce((draft) => {
+        draft[name] = value;
+      })
+    );
+  }, []);
 
   const onSubmit = useCallback(
     (e) => {
@@ -30,28 +26,34 @@ export default function App() {
         name: form.name,
         username: form.username,
       };
-      setData({
-        ...data,
-        array: data.array.concat(info),
-      });
+      setData(
+        produce((draft) => {
+          draft.array.push(info);
+        })
+      );
       setForm({
         name: "",
         username: "",
       });
       nextId.current += 1;
     },
-    [data, form.name, form.usename]
+    [form.name, form.usename]
   );
 
-  const onRemove = useCallback(
-    (id) => {
-      setData({
-        ...data,
-        array: data.array.filter((info) => info.id !== id),
-      });
-    },
-    [data]
-  );
+  const onRemove = useCallback((id) => {
+    setData(
+      produce((draft) => {
+        draft.array.splice(
+          draft.array.findIndex((info) => info.id === id),
+          1
+        );
+      })
+      //   {
+      //   ...data,
+      //   array: data.array.filter((info) => info.id !== id),
+      // }
+    );
+  }, []);
   return (
     <div>
       <form onSubmit={onSubmit}>
