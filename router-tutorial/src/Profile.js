@@ -8,6 +8,7 @@ const data = {
 
 const Profile = ({ props }) => {
   const { username } = useParams();
+  console.log("c", username);
   const profile = data[username];
   if (!profile) {
     return <div>존재하지 않는 사용자입니다.</div>;

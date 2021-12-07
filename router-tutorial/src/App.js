@@ -2,9 +2,8 @@ import React from "react";
 import { Link, Route, Routes, useParams } from "react-router-dom";
 import Home from "./Home";
 import About from "./About";
-import Profile from "./Profile";
+import Profiles from "./Profiles";
 function App() {
-  const { username } = useParams();
   return (
     <div>
       <div>
@@ -16,10 +15,7 @@ function App() {
             <Link to="/about">소개</Link>
           </li>
           <li>
-            <Link to="/profile/cky">cky 프로필이시다.</Link>
-          </li>
-          <li>
-            <Link to="profile/park">park 프로필이시다</Link>
+            <Link to="/profiles">프로필</Link>
           </li>
         </ul>
         <hr />
@@ -30,8 +26,7 @@ function App() {
           <Route path="hello" element={<Home />} />
         </Route>
 
-        <Route path="/profile/:username" element={<Profile />} />
-        <Route path="/profile/" element={<Profile />} />
+        <Route path="/profiles/*" element={<Profiles />} />
       </Routes>
     </div>
   );
