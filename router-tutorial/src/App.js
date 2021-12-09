@@ -3,6 +3,7 @@ import { Link, Route, Routes, useParams } from "react-router-dom";
 import Home from "./Home";
 import About from "./About";
 import Profiles from "./Profiles";
+import History from "./HistorySample";
 function App() {
   return (
     <div>
@@ -17,6 +18,9 @@ function App() {
           <li>
             <Link to="/profiles">프로필</Link>
           </li>
+          <li>
+            <Link to="/history">history 예제</Link>
+          </li>
         </ul>
         <hr />
       </div>
@@ -25,8 +29,8 @@ function App() {
         <Route path="/about" element={<About />}>
           <Route path="hello" element={<Home />} />
         </Route>
-
         <Route path="/profiles/*" element={<Profiles />} />
+        <Route path="/history" element={<History />} />
       </Routes>
     </div>
   );
