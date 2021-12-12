@@ -3,12 +3,16 @@ import axios from "axios";
 //axios로 api정보 불러오기
 const App = () => {
   const [data, setData] = useState(null);
-  const onClick = () => {
-    axios.get("https://jsonplaceholder.typicode.com/todos/1").then((res) => {
-      setData(res.data);
-    });
+  const onClick = async () => {
+    try {
+      const response = await axios.get(
+        "https://jsonplaceholder.typicode.com/todos/1"
+      );
+      setData(response.data);
+    } catch (e) {
+      console.log(e);
+    }
   };
-  console.log("data", data);
 
   return (
     <div>
