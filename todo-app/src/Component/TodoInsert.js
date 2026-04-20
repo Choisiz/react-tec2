@@ -2,7 +2,7 @@ import { useCallback, useState, useRef } from "react";
 import { MdAdd } from "react-icons/md";
 import "../TodoInsert.scss";
 
-const TodoInsert = (props) => {
+const TodoInsert = ({onInsert}) => {
   const [value, setValue] = useState("");
 
   const onChange = (e) => {
@@ -11,7 +11,7 @@ const TodoInsert = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    props.onInsert(value);
+    onInsert(value);
     setValue("");
   };
 

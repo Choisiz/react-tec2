@@ -15,6 +15,7 @@ const App = () => {
       checked: false,
     };
     setTodos((todos) => todos.concat(todo));
+    //setTodos((todos) => [...todos, todo]);
     nextId.current += 1;
   }, []);
 
