@@ -1,12 +1,22 @@
 const { ObjectId } = require("mongoose").Types;
 
-exports.checkObjectId = (ctx, next) => {
+exports.getPostById = (ctx, next) => {
   const { id } = ctx.params;
   if (!ObjectId.isValid(id)) {
     ctx.status = 400;
     return;
   }
-  return next();
+  try {
+    const post = Post.findById(id);
+    if (!post) {
+      ctx.status = 404;
+      return;
+    }
+    ctx.state.post = post;
+    return next();
+  } catch (e) {
+    ctx.throw(500, e);
+  }
 };
 
 exports.write = async (ctx) => {
@@ -27,6 +37,7 @@ exports.write = async (ctx) => {
     title,
     body,
     tags,
+    user: ctx.state.user,
   });
   try {
     await post.save();
@@ -42,6 +53,11 @@ exports.list = async (ctx) => {
     ctx.status = 400;
     return;
   }
+  const { tag, username } = ctx.query;
+  const query = {
+    ...(username ? { "user.username": username } : {}),
+    ...(tag ? { tags: tag } : {}),
+  };
   try {
     const posts = await Post.find()
       .sort({ _id: -1 })
@@ -49,7 +65,7 @@ exports.list = async (ctx) => {
       .skip((page - 1) * 10)
       .lean()
       .exec();
-    const postCount = await Post.countDocuments().exec();
+    const postCount = await Post.countDocuments(query).exec();
     ctx.set("Last-Page", Math.ceil(postCount / 10));
     ctx.body = posts.map((post) => ({
       ...post,
@@ -62,17 +78,7 @@ exports.list = async (ctx) => {
 };
 
 exports.read = async (ctx) => {
-  const { id } = ctx.params;
-  try {
-    const post = await Post.findById(id).exec();
-    if (!post) {
-      ctx.status = 404;
-      return;
-    }
-    ctx.body = post;
-  } catch (e) {
-    ctx.throw(500, e);
-  }
+  ctx.body = ctx.state.post;
 };
 
 exports.remove = async (ctx) => {
@@ -111,4 +117,13 @@ exports.update = async (ctx) => {
   } catch (e) {
     ctx.throw(500, e);
   }
+};
+
+exports.checkOwnPost = (ctx, next) => {
+  const { user, post } = ctx.state;
+  if (post.user._id.toString() !== user._id) {
+    ctx.status = 403;
+    return;
+  }
+  return next();
 };

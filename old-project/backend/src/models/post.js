@@ -8,6 +8,10 @@ const PostSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  user: {
+    _id: Schema.Types.ObjectId,
+    username: String,
+  },
 });
 
 const Post = model("Post", PostSchema);
